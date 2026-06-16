@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es" data-base-path="./">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Panel de Administración - DOVI S.A.S.</title>
+  <link href="assets/img/favicon-64.png" rel="icon">
+ 
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
+  <link href="assets/css/custom.css" rel="stylesheet">
+</head>
+
+<body class="service-details-page">
+
+  <!-- Role-based Access Guard script -->
+  <script>
+    // Run synchronously before body elements render to avoid flashing content
+    (function() {
+      const dbExists = localStorage.getItem("dovi_users");
+      if (dbExists) {
+        const currentUser = localStorage.getItem("dovi_currentUser");
+        if (currentUser) {
+          const parsed = JSON.parse(currentUser);
+          if (parsed.rol === "Administrador") {
+            return; // Allow access
+          }
+        }
+      }
+      // If not logged in or not admin, redirect
+      sessionStorage.setItem("admin_error", "Acceso denegado. Se requieren permisos de Administrador.");
+      window.location.replace("login.html");
+    })();
+  </script>
+
+  <!-- Reusable Navbar Component Target -->
+  <header id="header" class="header d-flex align-items-center sticky-top"></header>
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title admin-title-banner">
+      <div class="heading">
+        <div class="container text-center">
+          <h1 class="heading-title admin-title-text"><i class="bi bi-shield-lock-fill"></i> Panel de Control Administrativo</h1>
+          <p class="mb-0 text-white-50">Gestiona los pagos, solicitudes, contratos, servicios y maquinaria en un solo lugar.</p>
+        </div>
+      </div>
+      <nav class="breadcrumbs admin-breadcrumbs">
+        <div class="container">
+          <ol class="breadcrumb mb-0 breadcrumb-no-bg">
+            <li class="breadcrumb-item"><a href="index.html" class="orange-link">Inicio</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Panel Admin</li>
+          </ol>
+        </div>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <!-- Panel Content -->
+    <section class="py-5 admin-content-section">
+      <div class="container">
+
+        <!-- Global Action Feedback Notifications -->
+        <div class="alert alert-success alert-dismissible fade show border-0 shadow-lg mb-4 admin-alert-success d-none" id="admin-notification" role="alert">
+          <i class="bi bi-check-circle-fill me-2"></i> <span id="notification-text">El estado ha sido actualizado.</span>
+          <button type="button" class="btn-close btn-close-white" onclick="document.getElementById('admin-notification').classList.add('d-none')"></button>
+        </div>
+
+        <!-- 1. Estadísticas Rápidas (Dashboard) -->
+        <div class="row g-4 mb-5">
+          
+          <!-- Tarjeta: Pagos Pendientes -->
+          <div class="col-xl-3 col-md-6">
+            <div class="card border-0 rounded-4 shadow-sm h-100 admin-card card-border-warning">
+              <div class="card-body d-flex align-items-center justify-content-between p-4">
+                <div>
+                  <h6 class="text-white-50 text-uppercase mb-2 admin-card-h6">Pagos Pendientes</h6>
+                  <h3 class="fw-bold mb-0 text-warning" id="stat-pagos-pendientes">0</h3>
+                </div>
+                <div class="rounded-circle p-3 bg-warning bg-opacity-10 text-warning admin-stat-icon bg-warning-light">
+                  <i class="bi bi-hourglass-split"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta: Total Recaudado -->
+          <div class="col-xl-3 col-md-6">
+            <div class="card border-0 rounded-4 shadow-sm h-100 admin-card card-border-success">
+              <div class="card-body d-flex align-items-center justify-content-between p-4">
+                <div>
+                  <h6 class="text-white-50 text-uppercase mb-2 admin-card-h6">Recaudado (Verificado)</h6>
+                  <h3 class="fw-bold mb-0 text-success" id="stat-total-verificado">$0</h3>
+                </div>
+                <div class="rounded-circle p-3 bg-success bg-opacity-10 text-success admin-stat-icon bg-success-light">
+                  <i class="bi bi-cash-coin"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta: Solicitudes Pendientes -->
+          <div class="col-xl-3 col-md-6">
+            <div class="card border-0 rounded-4 shadow-sm h-100 admin-card card-border-info">
+              <div class="card-body d-flex align-items-center justify-content-between p-4">
+                <div>
+                  <h6 class="text-white-50 text-uppercase mb-2 admin-card-h6">Solicitudes Pendientes</h6>
+                  <h3 class="fw-bold mb-0 text-info" id="stat-solicitudes-pendientes">0</h3>
+                </div>
+                <div class="rounded-circle p-3 bg-info bg-opacity-10 text-info admin-stat-icon bg-info-light">
+                  <i class="bi bi-file-earmark-medical"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta: Contratos Activos -->
+          <div class="col-xl-3 col-md-6">
+            <div class="card border-0 rounded-4 shadow-sm h-100 admin-card card-border-orange">
+              <div class="card-body d-flex align-items-center justify-content-between p-4">
+                <div>
+                  <h6 class="text-white-50 text-uppercase mb-2 admin-card-h6">Contratos Activos</h6>
+                  <h3 class="fw-bold mb-0 text-orange" id="stat-contratos-activos">0</h3>
+                </div>
+                <div class="rounded-circle p-3 bg-opacity-10 text-orange admin-stat-icon bg-orange-light">
+                  <i class="bi bi-file-earmark-check"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 2. Navegación por Pestañas (Tabs) -->
+        <div class="card border-0 rounded-4 p-4 admin-card-bg">
+          
+          <ul class="nav nav-pills mb-4 gap-2 flex-column flex-sm-row justify-content-center" id="adminTabs" role="tablist">
+            
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active px-4 py-2.5 rounded-pill text-white border-0 admin-nav-button" id="pagos-tab" data-bs-toggle="tab" data-bs-target="#pagos-content" type="button" role="tab" aria-controls="pagos-content" aria-selected="true">
+                <i class="bi bi-wallet2 me-2 text-warning"></i> Pagos (<span id="count-pagos">0</span>)
+              </button>
+            </li>
+            
+            <li class="nav-item" role="presentation">
+              <button class="nav-link px-4 py-2.5 rounded-pill text-white border-0 admin-nav-button" id="solicitudes-tab" data-bs-toggle="tab" data-bs-target="#solicitudes-content" type="button" role="tab" aria-controls="solicitudes-content" aria-selected="false">
+                <i class="bi bi-file-text me-2 text-info"></i> Solicitudes (<span id="count-solicitudes">0</span>)
+              </button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+              <button class="nav-link px-4 py-2.5 rounded-pill text-white border-0 admin-nav-button" id="contratos-tab" data-bs-toggle="tab" data-bs-target="#contratos-content" type="button" role="tab" aria-controls="contratos-content" aria-selected="false">
+                <i class="bi bi-journal-check me-2 text-success"></i> Contratos (<span id="count-contratos">0</span>)
+              </button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+              <button class="nav-link px-4 py-2.5 rounded-pill text-white border-0 admin-nav-button" id="servicios-tab" data-bs-toggle="tab" data-bs-target="#servicios-content" type="button" role="tab" aria-controls="servicios-content" aria-selected="false">
+                <i class="bi bi-gear me-2 text-danger"></i> Servicios (6)
+              </button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+              <button class="nav-link px-4 py-2.5 rounded-pill text-white border-0 admin-nav-button" id="maquinas-tab" data-bs-toggle="tab" data-bs-target="#maquinas-content" type="button" role="tab" aria-controls="maquinas-content" aria-selected="false">
+                <i class="bi bi-truck me-2 text-primary"></i> Maquinaria (6)
+              </button>
+            </li>
+
+          </ul>
+
+          <div class="tab-content" id="adminTabsContent">
+
+            <!-- ================= TAB: PAGOS ================= -->
+            <div class="tab-pane fade show active" id="pagos-content" role="tabpanel" aria-labelledby="pagos-tab">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0 text-orange">Verificación de Pagos</h4>
+                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill" id="badge-pagos-pendientes">0 Pendientes</span>
+              </div>
+              
+              <div class="table-responsive">
+                <table class="table table-dark table-hover align-middle border-0 admin-table">
+                  <thead>
+                    <tr class="admin-table-row-header">
+                      <th class="py-3 px-3 text-center">ID</th>
+                      <th class="py-3">Contrato</th>
+                      <th class="py-3">Cliente</th>
+                      <th class="py-3 text-end">Monto</th>
+                      <th class="py-3">Fecha Recibo</th>
+                      <th class="py-3 text-center">Estado</th>
+                      <th class="py-3 text-center">Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody id="table-pagos-body">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- ================= TAB: SOLICITUDES ================= -->
+            <div class="tab-pane fade" id="solicitudes-content" role="tabpanel" aria-labelledby="solicitudes-tab">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0 text-orange">Gestión de Solicitudes</h4>
+                <span class="badge bg-info text-white px-3 py-2 rounded-pill" id="badge-solicitudes-pendientes">0 Pendientes</span>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table table-dark table-hover align-middle border-0 admin-table">
+                  <thead>
+                    <tr class="admin-table-row-header">
+                      <th class="py-3 px-3 text-center">ID</th>
+                      <th class="py-3">Cliente</th>
+                      <th class="py-3">Tipo</th>
+                      <th class="py-3">Detalle</th>
+                      <th class="py-3 text-center">Fecha Inicio</th>
+                      <th class="py-3 text-center">Fecha Fin</th>
+                      <th class="py-3">Ubicación</th>
+                      <th class="py-3 text-center">Estado</th>
+                      <th class="py-3 text-center">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="table-solicitudes-body">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- ================= TAB: CONTRATOS ================= -->
+            <div class="tab-pane fade" id="contratos-content" role="tabpanel" aria-labelledby="contratos-tab">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0 text-orange">Contratos Generados</h4>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table table-dark table-hover align-middle border-0 admin-table">
+                  <thead>
+                    <tr class="admin-table-row-header">
+                      <th class="py-3 px-3 text-center">ID</th>
+                      <th class="py-3">Código Contrato</th>
+                      <th class="py-3">Cliente</th>
+                      <th class="py-3">Fecha de Creación</th>
+                      <th class="py-3 text-center">Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody id="table-contratos-body">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- ================= TAB: SERVICIOS ================= -->
+            <div class="tab-pane fade" id="servicios-content" role="tabpanel" aria-labelledby="servicios-tab">
+              <h4 class="fw-bold text-orange mb-3">Catálogo de Servicios Agrícolas</h4>
+              <div class="table-responsive">
+                <table class="table table-dark table-hover align-middle border-0 admin-table">
+                  <thead>
+                    <tr class="admin-table-row-header">
+                      <th class="py-3 text-center">ID</th>
+                      <th class="py-3">Nombre del Servicio</th>
+                      <th class="py-3">Slug (Ruta)</th>
+                      <th class="py-3 text-center">Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-center">1</td>
+                      <td>Preparación de Terrenos</td>
+                      <td><code>preparacion_terrenos</code></td>
+                      <td class="text-center"><span class="badge bg-success">Activo</span></td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">2</td>
+                      <td>Siembra y Cultivo</td>
+                      <td><code>siembra_cultivo</code></td>
+                      <td class="text-center"><span class="badge bg-success">Activo</span></td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">3</td>
+                      <td>Mantenimiento de Cultivos</td>
+                      <td><code>mantenimiento_cultivos</code></td>
+                      <td class="text-center"><span class="badge bg-success">Activo</span></td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">4</td>
+                      <td>Fumigación y Aplicación</td>
+                      <td><code>fumigacion_aplicacion</code></td>
+                      <td class="text-center"><span class="badge bg-success">Activo</span></td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">5</td>
+                      <td>Asistencia Agrícola</td>
+                      <td><code>asistencia_agricola</code></td>
+                      <td class="text-center"><span class="badge bg-success">Activo</span></td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">6</td>
+                      <td>Servicios Generales</td>
+                      <td><code>servicios_generales</code></td>
+                      <td class="text-center"><span class="badge bg-success">Activo</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- ================= TAB: MAQUINARIA ================= -->
+            <div class="tab-pane fade" id="maquinas-content" role="tabpanel" aria-labelledby="maquinas-tab">
+              <h4 class="fw-bold text-orange mb-3">Inventario de Maquinaria Pesada</h4>
+              <div class="table-responsive">
+                <table class="table table-dark table-hover align-middle border-0 admin-table">
+                  <thead>
+                    <tr class="admin-table-row-header">
+                      <th class="py-3 text-center">ID</th>
+                      <th class="py-3">Maquinaria</th>
+                      <th class="py-3">Slug (Ruta)</th>
+                      <th class="py-3 text-center">Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-center">1</td>
+                      <td>Retroexcavadora</td>
+                      <td><code>retroexcavadora</code></td>
+                      <td class="text-center"><span class="badge bg-success">Disponible</span></td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">2</td>
+                      <td>Bulldozer</td>
+                      <td><code>bulldozer</code></td>
+                      <td class="text-center"><span class="badge bg-success">Disponible</span></td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">3</td>
+                      <td>Cargadores Frontales</td>
+                      <td><code>cargador_frontal</code></td>
+                      <td class="text-center"><span class="badge bg-success">Disponible</span></td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">4</td>
+                      <td>Minicargadores</td>
+                      <td><code>minicargador</code></td>
+                      <td class="text-center"><span class="badge bg-success">Disponible</span></td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">5</td>
+                      <td>Bolquetas</td>
+                      <td><code>bolqueta</code></td>
+                      <td class="text-center"><span class="badge bg-success">Disponible</span></td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">6</td>
+                      <td>Motoniveladoras</td>
+                      <td><code>motoniveladora</code></td>
+                      <td class="text-center"><span class="badge bg-warning text-dark">Mantenimiento</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Reusable Footer Component Target -->
+  <footer id="footer" class="footer dark-background"></footer>
+
+  <!-- Modal de Detalle (Admin Panel) -->
+  <div class="modal fade" id="adminDetailModal" tabindex="-1" aria-labelledby="adminDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content text-white shadow-lg admin-modal-bg">
+        <div class="modal-header border-bottom border-secondary">
+          <h5 class="modal-title fw-bold admin-modal-title-color" id="adminDetailModalLabel"><i class="bi bi-info-circle-fill"></i> Detalle del Registro</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="adminDetailModalBody">
+          <!-- Populated dynamically -->
+        </div>
+        <div class="modal-header border-top border-secondary">
+          <button type="button" class="btn btn-secondary px-4 rounded-pill" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Database Mock and Session management -->
+  <script src="assets/js/db-mock.js"></script>
+
+  <script>
+    // Load components and then initialize main scripts and AdminController
+    Promise.all([
+      window.HeaderView.renderHeader(),
+      window.FooterView.renderFooter()
+    ]).then(() => {
+      const basePath = document.documentElement.getAttribute('data-base-path') || './';
+      const script = document.createElement('script');
+      script.src = basePath + 'assets/js/main.js';
+      document.body.appendChild(script);
+
+      // Initialize admin controller
+      window.AdminController.init();
+    }).catch(err => console.error("Error loading layout components:", err));
+  </script>
+</body>
+
+</html>

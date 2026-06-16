@@ -1,0 +1,233 @@
+/* DOVI S.A.S. - Custom Styles */
+/* Centralizes styles previously defined inline (style="...") to keep HTML 100% clean and semantic. */
+
+/* Utility classes */
+.display-none {
+  display: none !important;
+}
+
+/* Breadcrumbs customization */
+.breadcrumb-no-bg {
+  background: none !important;
+  padding: 0 !important;
+}
+
+.orange-link {
+  color: #f45b0f !important;
+  text-decoration: none !important;
+}
+
+.orange-link:hover {
+  color: #d14a0a !important;
+  text-decoration: underline !important;
+}
+
+/* Admin panel specific styles */
+.admin-alert-success {
+  background-color: #1b5e20 !important;
+  color: #e8f5e9 !important;
+}
+
+.admin-card-h6 {
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px !important;
+}
+
+.admin-card-bg {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.admin-nav-button {
+  background: rgba(255, 255, 255, 0.08) !important;
+  transition: all 0.3s !important;
+}
+
+.admin-nav-button:hover,
+.admin-nav-button.active {
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+.admin-table {
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  background: rgba(0, 0, 0, 0.2) !important;
+}
+
+.admin-table-row-header {
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1) !important;
+  background-color: rgba(0, 0, 0, 0.4) !important;
+}
+
+.admin-modal-bg {
+  background-color: #2b2b2b !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.admin-modal-title-color {
+  color: #f45b0f !important;
+}
+
+/* Dynamically generated admin table classes */
+.admin-table-row {
+  cursor: pointer !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.admin-small-email {
+  font-size: 0.8rem !important;
+}
+
+.admin-tiny-text {
+  font-size: 0.75rem !important;
+}
+
+.admin-table-desc-text {
+  font-size: 0.8rem !important;
+  max-width: 250px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Buttons and Links */
+.btn-submit-orange {
+  background-color: #f45b0f !important;
+  border-color: #f45b0f !important;
+}
+
+.btn-submit-orange:hover {
+  background-color: #d14a0a !important;
+  border-color: #d14a0a !important;
+}
+
+.btn-hero-orange {
+  background-color: #f45b0f !important;
+  border-color: #f45b0f !important;
+}
+
+.btn-hero-orange:hover {
+  background-color: #d14a0a !important;
+  border-color: #d14a0a !important;
+}
+
+.contact-button-orange {
+  background: #f45b0f !important;
+  border: 0 !important;
+  padding: 10px 30px !important;
+  color: #fff !important;
+  transition: 0.4s !important;
+  border-radius: 4px !important;
+}
+
+.contact-button-orange:hover {
+  background: #d14a0a !important;
+}
+
+/* General Layout helpers */
+.map-iframe {
+  border: 0 !important;
+}
+
+.linea-decorativa-orange {
+  height: 3px !important;
+  width: 60px !important;
+  background-color: #f45b0f !important;
+  margin: 10px auto !important;
+}
+
+/* Login inputs */
+.login-input-group-text {
+  background: transparent !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.login-input-control {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+}
+
+.login-input-control:focus {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: #f45b0f !important;
+  color: #fff !important;
+}
+
+.login-btn-submit {
+  background: #f45b0f !important;
+  border-color: #f45b0f !important;
+  color: #fff !important;
+}
+
+.login-btn-submit:hover {
+  background: #d14a0a !important;
+  border-color: #d14a0a !important;
+}
+
+/* Machinery Details CTA card styling */
+.machinery-cta-card {
+  background-color: #fcf6f2 !important;
+  border: 1px solid #f4e3d7 !important;
+  border-radius: 8px !important;
+}
+
+.machinery-cta-title {
+  color: #d17443 !important;
+  font-weight: 700 !important;
+}
+
+.machinery-cta-btn {
+  background-color: #d17443 !important;
+  border-color: #d17443 !important;
+}
+
+.machinery-cta-btn:hover {
+  background-color: #b55d2f !important;
+  border-color: #b55d2f !important;
+}
+
+/* Services Details author/testimonial styling */
+.service-author-img {
+  width: 40px !important;
+  height: 40px !important;
+  object-fit: cover !important;
+}
+
+.service-author-name {
+  font-size: 0.95rem !important;
+}
+
+.service-cta-btn {
+  background-color: #d17443 !important;
+  border-color: #d17443 !important;
+}
+
+.service-cta-btn:hover {
+  background-color: #b55d2f !important;
+  border-color: #b55d2f !important;
+}
+
+.service-general-img {
+  width: 100% !important;
+}
+
+/* Extracted Admin panel modal detail styles */
+.admin-detail-badge-code {
+  font-size: 0.95rem !important;
+}
+
+.admin-detail-amount {
+  font-size: 1.1rem !important;
+}
+
+.admin-detail-description {
+  white-space: pre-wrap !important;
+  font-size: 0.9rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.admin-detail-badge-success {
+  font-size: 1.1rem !important;
+}

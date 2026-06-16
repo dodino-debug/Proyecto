@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es" data-base-path="./">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Solicitud de Contrato - DOVI S.A.S.</title>
+  <meta name="description" content="Solicite el alquiler de maquinaria o la prestación de servicios agrícolas para su proyecto.">
+  <meta name="keywords" content="maquinaria pesada, servicios agricolas, alquiler, contrato, retroexcavadora">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon-64.png" rel="icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+  <link href="assets/css/custom.css" rel="stylesheet">
+</head>
+
+<body class="service-details-page">
+
+  <!-- Reusable Navbar Component Target -->
+  <header id="header" class="header d-flex align-items-center sticky-top"></header>
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title">
+      <div class="heading">
+        <div class="container">
+          <div class="row d-flex justify-content-center text-center">
+            <div class="col-lg-8" data-aos="fade-up">
+              <h1 class="heading-title">Solicitud de Contrato</h1>
+              <p class="mb-0">
+                Solicite el alquiler de maquinaria o la prestación de servicios agrícolas para su proyecto. Nuestro equipo revisará su solicitud y generará un contrato de servicio formal.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav class="breadcrumbs">
+        <div class="container">
+          <ol>
+            <li><a href="index.html">Inicio</a></li>
+            <li class="current">Solicitud de Contrato</li>
+          </ol>
+        </div>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <!-- Contract Form Section -->
+    <section class="section py-5">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            
+            <div class="card border-0 shadow rounded-4 p-4 p-md-5">
+              
+              <!-- Authentication Guard Warning -->
+              <div class="alert alert-warning text-center mb-4 d-none" id="login-warning">
+                <h5>Se requiere iniciar sesión</h5>
+                <p class="mb-3">Para realizar una solicitud de contrato debe tener una cuenta iniciada.</p>
+                <a href="login.html" class="btn btn-warning rounded-pill fw-bold text-uppercase px-4 py-2">Iniciar Sesión</a>
+              </div>
+
+              <!-- General Alerts -->
+              <div class="alert alert-danger alert-dismissible fade show text-center mb-4 d-none" id="submit-error" role="alert">
+                <span id="error-text">Ocurrió un error.</span>
+                <button type="button" class="btn-close" onclick="document.getElementById('submit-error').classList.add('d-none')"></button>
+              </div>
+
+              <div class="alert alert-success alert-dismissible fade show text-center mb-4 d-none" id="submit-success" role="alert">
+                <span id="success-text">¡Su solicitud ha sido enviada con éxito!</span>
+                <button type="button" class="btn-close" onclick="document.getElementById('submit-success').classList.add('d-none')"></button>
+              </div>
+
+              <form id="contract-form" class="d-none">
+                <div class="row gy-4">
+                  
+                  <div class="col-md-6">
+                    <label for="tipo_solicitud" class="form-label fw-semibold">Tipo de Solicitud</label>
+                    <select class="form-select py-2.5" id="tipo_solicitud" name="tipo_solicitud" required>
+                      <option value="" disabled selected>Seleccione...</option>
+                      <option value="Servicio">Prestación de Servicio Agrícola</option>
+                      <option value="Maquinaria">Alquiler de Maquinaria Pesada</option>
+                      <option value="Ambos">Ambos (Servicio + Maquinaria)</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="direccion_servicio" class="form-label fw-semibold">Ubicación del Proyecto</label>
+                    <input type="text" class="form-control py-2.5" id="direccion_servicio" name="direccion_servicio" placeholder="Ej. Vereda Aguas Blancas, San Martín" required>
+                  </div>
+
+                  <div class="col-md-6 d-none" id="container_servicio">
+                    <label for="id_servicio" class="form-label fw-semibold">Servicio Agrícola Requerido</label>
+                    <select class="form-select py-2.5" id="id_servicio" name="id_servicio">
+                      <option value="" selected>Seleccione un servicio...</option>
+                      <!-- Populated by JS -->
+                    </select>
+                  </div>
+
+                  <div class="col-md-6 d-none" id="container_maquina">
+                    <label for="id_maquina" class="form-label fw-semibold">Maquinaria Pesada Requerida</label>
+                    <select class="form-select py-2.5" id="id_maquina" name="id_maquina">
+                      <option value="" selected>Seleccione una máquina...</option>
+                      <!-- Populated by JS -->
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="fecha_inicio" class="form-label fw-semibold">Fecha de Inicio Estimada</label>
+                    <input type="date" class="form-control py-2.5" id="fecha_inicio" name="fecha_inicio" required>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="fecha_fin" class="form-label fw-semibold">Fecha de Finalización Estimada</label>
+                    <input type="date" class="form-control py-2.5" id="fecha_fin" name="fecha_fin" required>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="descripcion_detallada" class="form-label fw-semibold">Descripción Detallada del Proyecto</label>
+                    <textarea class="form-control" id="descripcion_detallada" name="descripcion_detallada" rows="5" placeholder="Escriba aquí los detalles de su necesidad agrícola o especificaciones técnicas de la maquinaria requerida..." required></textarea>
+                  </div>
+
+                  <div class="col-12 text-center mt-5">
+                    <button type="submit" class="btn btn-primary px-5 py-3 rounded-pill fw-bold text-uppercase btn-submit-orange">Enviar Solicitud</button>
+                  </div>
+
+                </div>
+              </form>
+              
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Reusable Footer Component Target -->
+  <footer id="footer" class="footer dark-background"></footer>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+
+  <!-- Database Mock and Session management -->
+  <script src="assets/js/db-mock.js"></script>
+
+  <script>
+    // Load components in parallel, then initialize main scripts and ContractController
+    Promise.all([
+      window.HeaderView.renderHeader(),
+      window.FooterView.renderFooter()
+    ]).then(() => {
+      const basePath = document.documentElement.getAttribute('data-base-path') || './';
+      const script = document.createElement('script');
+      script.src = basePath + 'assets/js/main.js';
+      document.body.appendChild(script);
+
+      // Initialize contract controller
+      window.ContractController.init();
+    }).catch(err => console.error("Error loading layout components:", err));
+  </script>
+
+</body>
+
+</html>

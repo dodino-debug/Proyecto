@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es" data-base-path="./">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrarse - DOVI S.A.S.</title>
+  
+  <link href="assets/img/favicon-64.png" rel="icon">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
+  <link href="assets/css/custom.css" rel="stylesheet">
+</head>
+<body class="login-bg d-flex flex-column justify-content-between">
+
+  <header class="p-3" id="auth-header"></header>
+
+  <main class="container my-4">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        
+        <div class="text-center mb-4">
+          <h2 class="fw-bold text-white">Crear Cuenta</h2>
+          <div class="linea-decorativa decor-line"></div>
+        </div>
+
+        <div id="errorAlert" class="alert alert-danger d-none text-center py-2 small" role="alert">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i> <span id="errorAlertText">Las contraseñas no coinciden.</span>
+          <button type="button" class="btn-close" onclick="document.getElementById('errorAlert').classList.add('d-none')"></button>
+        </div>
+
+        <form id="formRegistro">
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="nombre" class="form-label small fw-semibold text-white-50">Nombre</label>
+              <div class="input-group">
+                <span class="input-group-text form-control-dovi input-group-text-dovi"><i class="bi bi-person text-white-50"></i></span>
+                <input type="text" class="form-control form-control-dovi" id="nombre" name="nombre" placeholder="Tu nombre"  required>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="apellido" class="form-label small fw-semibold text-white-50">Apellido</label>
+              <div class="input-group">
+                <span class="input-group-text form-control-dovi input-group-text-dovi"><i class="bi bi-person-fill text-white-50"></i></span>
+                <input type="text" class="form-control form-control-dovi" id="apellido" name="apellido" placeholder="Tu apellido"  required>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-5 mb-3">
+              <label for="tipo_documento" class="form-label small fw-semibold text-white-50">Tipo Documento</label>
+              <div class="input-group">
+                <span class="input-group-text form-control-dovi input-group-text-dovi"><i class="bi bi-card-heading text-white-50"></i></span>
+                <select class="form-control form-control-dovi" id="tipo_documento" name="tipo_documento" required>
+                  <option value="" disabled selected>Seleccione...</option>
+                  <option value="CC">CC - Cédula de Ciudadanía</option>
+                  <option value="NIT">NIT - Número de Identificación Tributaria</option>
+                  <option value="CE">CE - Cédula de Extranjería</option>
+                  <option value="RUT">RUT - Registro Único Tributario</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-7 mb-3">
+              <label for="numero_documento" class="form-label small fw-semibold text-white-50">Número de Documento</label>
+              <div class="input-group">
+                <span class="input-group-text form-control-dovi input-group-text-dovi"><i class="bi bi-hash text-white-50"></i></span>
+                <input type="text" class="form-control form-control-dovi" id="numero_documento" name="numero_documento" placeholder="Número de identificación"  required>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-5 mb-3">
+              <label for="telefono" class="form-label small fw-semibold text-white-50">Teléfono</label>
+              <div class="input-group">
+                <span class="input-group-text form-control-dovi input-group-text-dovi"><i class="bi bi-telephone text-white-50"></i></span>
+                <input type="tel" class="form-control form-control-dovi" id="telefono" name="telefono" placeholder="Ej: 3001234567"  required>
+              </div>
+            </div>
+            <div class="col-md-7 mb-3">
+              <label for="direccion" class="form-label small fw-semibold text-white-50">Dirección</label>
+              <div class="input-group">
+                <span class="input-group-text form-control-dovi input-group-text-dovi"><i class="bi bi-geo-alt text-white-50"></i></span>
+                <input type="text" class="form-control form-control-dovi" id="direccion" name="direccion" placeholder="Calle, Carrera, Nro"  required>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="correo" class="form-label small fw-semibold text-white-50">Correo Electrónico</label>
+            <div class="input-group">
+              <span class="input-group-text form-control-dovi input-group-text-dovi"><i class="bi bi-envelope text-white-50"></i></span>
+              <input type="email" class="form-control form-control-dovi" id="correo" name="correo" placeholder="nombre@correo.com"  required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="password" class="form-label small fw-semibold text-white-50">Contraseña</label>
+              <div class="input-group">
+                <span class="input-group-text form-control-dovi input-group-text-dovi"><i class="bi bi-lock text-white-50"></i></span>
+                <input type="password" class="form-control form-control-dovi" id="password" name="password"  required>
+              </div>
+            </div>
+            <div class="col-md-6 mb-4">
+              <label for="confirmPassword" class="form-label small fw-semibold text-white-50">Confirmar Contraseña</label>
+              <div class="input-group">
+                <span class="input-group-text form-control-dovi input-group-text-dovi"><i class="bi bi-lock-fill text-white-50"></i></span>
+                <input type="password" class="form-control form-control-dovi" id="confirmPassword"  required>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4 form-check">
+            <input type="checkbox" class="form-check-input pointer-click" id="terms" required>
+            <label class="form-check-label text-white-50 small pointer-click" for="terms">Acepto los <a href="#" class="text-orange text-decoration-none">términos y condiciones</a></label>
+          </div>
+
+          <button type="submit" class="btn btn-dovi w-100 py-2.5 fw-bold text-uppercase" >Registrarse</button>
+          
+        </form>
+
+        <div class="text-center mt-4">
+          <p class="text-white-50 small mb-0">¿Ya eres usuario de DOVI? <a href="login.html" class="text-orange text-decoration-none fw-semibold">Inicia sesión aquí</a></p>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="text-center py-3 text-white-50 small" id="auth-footer"></footer>
+
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Database Mock and Session management -->
+  <script src="assets/js/db-mock.js"></script>
+
+  <script>
+    // Load components in parallel, then initialize registration controller
+    Promise.all([
+      window.HeaderView.renderHeader(),
+      window.FooterView.renderFooter()
+    ]).then(() => {
+      window.AuthController.initRegister();
+    }).catch(err => console.error("Error loading layout components:", err));
+  </script>
+</body>
+</html>
