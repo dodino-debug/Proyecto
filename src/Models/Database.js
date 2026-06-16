@@ -113,6 +113,24 @@
     }
   ];
 
+  const defaultServicios = [
+    { id: 1, nombre: "Preparación de Terrenos", slug: "preparacion-terrenos", estado: "Activo" },
+    { id: 2, nombre: "Siembra y Cultivo", slug: "siembra-cultivo", estado: "Activo" },
+    { id: 3, nombre: "Mantenimiento de Cultivos", slug: "mantenimiento-cultivos", estado: "Activo" },
+    { id: 4, nombre: "Fumigación y Aplicación", slug: "fumigacion-aplicacion", estado: "Activo" },
+    { id: 5, nombre: "Asistencia Agrícola", slug: "asistencia-agricola", estado: "Activo" },
+    { id: 6, nombre: "Servicios Generales", slug: "servicios-generales", estado: "Activo" }
+  ];
+
+  const defaultMaquinaria = [
+    { id: 1, nombre: "Retroexcavadora", slug: "retroexcavadora", estado: "Disponible" },
+    { id: 2, nombre: "Bulldozer", slug: "bulldozer", estado: "Disponible" },
+    { id: 3, nombre: "Cargador Frontal", slug: "cargador-frontal", estado: "Disponible" },
+    { id: 4, nombre: "Minicargador", slug: "minicargador", estado: "Disponible" },
+    { id: 5, nombre: "Bolqueta", slug: "bolqueta", estado: "Disponible" },
+    { id: 6, nombre: "Motoniveladora", slug: "motoniveladora", estado: "Mantenimiento" }
+  ];
+
   class Database {
     static init() {
       if (!localStorage.getItem("dovi_users")) {
@@ -126,6 +144,12 @@
       }
       if (!localStorage.getItem("dovi_pagos")) {
         localStorage.setItem("dovi_pagos", JSON.stringify(defaultPagos));
+      }
+      if (!localStorage.getItem("dovi_servicios")) {
+        localStorage.setItem("dovi_servicios", JSON.stringify(defaultServicios));
+      }
+      if (!localStorage.getItem("dovi_maquinaria")) {
+        localStorage.setItem("dovi_maquinaria", JSON.stringify(defaultMaquinaria));
       }
     }
 

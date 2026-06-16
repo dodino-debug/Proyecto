@@ -158,13 +158,13 @@
 
             <li class="nav-item" role="presentation">
               <button class="nav-link px-4 py-2.5 rounded-pill text-white border-0 admin-nav-button" id="servicios-tab" data-bs-toggle="tab" data-bs-target="#servicios-content" type="button" role="tab" aria-controls="servicios-content" aria-selected="false">
-                <i class="bi bi-gear me-2 text-danger"></i> Servicios (6)
+                <i class="bi bi-gear me-2 text-danger"></i> Servicios (<span id="count-servicios">0</span>)
               </button>
             </li>
 
             <li class="nav-item" role="presentation">
               <button class="nav-link px-4 py-2.5 rounded-pill text-white border-0 admin-nav-button" id="maquinas-tab" data-bs-toggle="tab" data-bs-target="#maquinas-content" type="button" role="tab" aria-controls="maquinas-content" aria-selected="false">
-                <i class="bi bi-truck me-2 text-primary"></i> Maquinaria (6)
+                <i class="bi bi-truck me-2 text-primary"></i> Maquinaria (<span id="count-maquinas">0</span>)
               </button>
             </li>
 
@@ -254,7 +254,12 @@
 
             <!-- ================= TAB: SERVICIOS ================= -->
             <div class="tab-pane fade" id="servicios-content" role="tabpanel" aria-labelledby="servicios-tab">
-              <h4 class="fw-bold text-orange mb-3">Catálogo de Servicios Agrícolas</h4>
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0 text-orange">Catálogo de Servicios Agrícolas</h4>
+                <button class="btn btn-sm btn-success rounded-pill px-3 py-1.5 fw-semibold" id="btn-add-servicio">
+                  <i class="bi bi-plus-lg me-1"></i> Agregar Servicio
+                </button>
+              </div>
               <div class="table-responsive">
                 <table class="table table-dark table-hover align-middle border-0 admin-table">
                   <thead>
@@ -263,45 +268,11 @@
                       <th class="py-3">Nombre del Servicio</th>
                       <th class="py-3">Slug (Ruta)</th>
                       <th class="py-3 text-center">Estado</th>
+                      <th class="py-3 text-center">Acciones</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td class="text-center">1</td>
-                      <td>Preparación de Terrenos</td>
-                      <td><code>preparacion_terrenos</code></td>
-                      <td class="text-center"><span class="badge bg-success">Activo</span></td>
-                    </tr>
-                    <tr>
-                      <td class="text-center">2</td>
-                      <td>Siembra y Cultivo</td>
-                      <td><code>siembra_cultivo</code></td>
-                      <td class="text-center"><span class="badge bg-success">Activo</span></td>
-                    </tr>
-                    <tr>
-                      <td class="text-center">3</td>
-                      <td>Mantenimiento de Cultivos</td>
-                      <td><code>mantenimiento_cultivos</code></td>
-                      <td class="text-center"><span class="badge bg-success">Activo</span></td>
-                    </tr>
-                    <tr>
-                      <td class="text-center">4</td>
-                      <td>Fumigación y Aplicación</td>
-                      <td><code>fumigacion_aplicacion</code></td>
-                      <td class="text-center"><span class="badge bg-success">Activo</span></td>
-                    </tr>
-                    <tr>
-                      <td class="text-center">5</td>
-                      <td>Asistencia Agrícola</td>
-                      <td><code>asistencia_agricola</code></td>
-                      <td class="text-center"><span class="badge bg-success">Activo</span></td>
-                    </tr>
-                    <tr>
-                      <td class="text-center">6</td>
-                      <td>Servicios Generales</td>
-                      <td><code>servicios_generales</code></td>
-                      <td class="text-center"><span class="badge bg-success">Activo</span></td>
-                    </tr>
+                  <tbody id="table-servicios-body">
+                    <!-- Populated dynamically -->
                   </tbody>
                 </table>
               </div>
@@ -309,7 +280,12 @@
 
             <!-- ================= TAB: MAQUINARIA ================= -->
             <div class="tab-pane fade" id="maquinas-content" role="tabpanel" aria-labelledby="maquinas-tab">
-              <h4 class="fw-bold text-orange mb-3">Inventario de Maquinaria Pesada</h4>
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0 text-orange">Inventario de Maquinaria Pesada</h4>
+                <button class="btn btn-sm btn-success rounded-pill px-3 py-1.5 fw-semibold" id="btn-add-maquina">
+                  <i class="bi bi-plus-lg me-1"></i> Agregar Maquinaria
+                </button>
+              </div>
               <div class="table-responsive">
                 <table class="table table-dark table-hover align-middle border-0 admin-table">
                   <thead>
@@ -318,45 +294,11 @@
                       <th class="py-3">Maquinaria</th>
                       <th class="py-3">Slug (Ruta)</th>
                       <th class="py-3 text-center">Estado</th>
+                      <th class="py-3 text-center">Acciones</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td class="text-center">1</td>
-                      <td>Retroexcavadora</td>
-                      <td><code>retroexcavadora</code></td>
-                      <td class="text-center"><span class="badge bg-success">Disponible</span></td>
-                    </tr>
-                    <tr>
-                      <td class="text-center">2</td>
-                      <td>Bulldozer</td>
-                      <td><code>bulldozer</code></td>
-                      <td class="text-center"><span class="badge bg-success">Disponible</span></td>
-                    </tr>
-                    <tr>
-                      <td class="text-center">3</td>
-                      <td>Cargadores Frontales</td>
-                      <td><code>cargador_frontal</code></td>
-                      <td class="text-center"><span class="badge bg-success">Disponible</span></td>
-                    </tr>
-                    <tr>
-                      <td class="text-center">4</td>
-                      <td>Minicargadores</td>
-                      <td><code>minicargador</code></td>
-                      <td class="text-center"><span class="badge bg-success">Disponible</span></td>
-                    </tr>
-                    <tr>
-                      <td class="text-center">5</td>
-                      <td>Bolquetas</td>
-                      <td><code>bolqueta</code></td>
-                      <td class="text-center"><span class="badge bg-success">Disponible</span></td>
-                    </tr>
-                    <tr>
-                      <td class="text-center">6</td>
-                      <td>Motoniveladoras</td>
-                      <td><code>motoniveladora</code></td>
-                      <td class="text-center"><span class="badge bg-warning text-dark">Mantenimiento</span></td>
-                    </tr>
+                  <tbody id="table-maquinas-body">
+                    <!-- Populated dynamically -->
                   </tbody>
                 </table>
               </div>
@@ -386,6 +328,45 @@
         <div class="modal-header border-top border-secondary">
           <button type="button" class="btn btn-secondary px-4 rounded-pill" data-bs-dismiss="modal">Cerrar</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Agregar/Editar Servicios o Maquinaria -->
+  <div class="modal fade" id="adminCrudModal" tabindex="-1" aria-labelledby="adminCrudModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-white shadow-lg admin-modal-bg">
+        <div class="modal-header border-bottom border-secondary">
+          <h5 class="modal-title fw-bold admin-modal-title-color" id="adminCrudModalLabel">Agregar / Editar</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="admin-crud-form">
+          <div class="modal-body">
+            <input type="hidden" id="crud-id" name="id">
+            <input type="hidden" id="crud-type" name="type">
+            
+            <div class="mb-3">
+              <label for="crud-nombre" class="form-label fw-semibold">Nombre</label>
+              <input type="text" class="form-control bg-dark text-white border-secondary" id="crud-nombre" name="nombre" required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="crud-slug" class="form-label fw-semibold">Slug (Ruta)</label>
+              <input type="text" class="form-control bg-dark text-white border-secondary" id="crud-slug" name="slug" placeholder="Dejar vacío para autogenerar">
+            </div>
+            
+            <div class="mb-3">
+              <label for="crud-estado" class="form-label fw-semibold">Estado</label>
+              <select class="form-select bg-dark text-white border-secondary" id="crud-estado" name="estado" required>
+                <!-- Options populated dynamically depending on type -->
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer border-top border-secondary">
+            <button type="button" class="btn btn-secondary px-4 rounded-pill" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary btn-submit-orange px-4 rounded-pill">Guardar</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

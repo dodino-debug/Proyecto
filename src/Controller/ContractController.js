@@ -4,24 +4,6 @@
 (function() {
   "use strict";
 
-  const servicesList = [
-    { id: "preparacion-terrenos", nombre: "Preparación de Terrenos" },
-    { id: "siembra-cultivo", nombre: "Siembra y Cultivo" },
-    { id: "mantenimiento-cultivos", nombre: "Mantenimiento de Cultivos" },
-    { id: "fumigacion-aplicacion", nombre: "Fumigación y Aplicación" },
-    { id: "asistencia-agricola", nombre: "Asistencia Agrícola" },
-    { id: "servicios-generales", nombre: "Servicios Generales" }
-  ];
-
-  const machinesList = [
-    { id: "retroexcavadora", nombre: "Retroexcavadora" },
-    { id: "bulldozer", nombre: "Bulldozer" },
-    { id: "cargador-frontal", nombre: "Cargador Frontal" },
-    { id: "minicargador", nombre: "Minicargador" },
-    { id: "bolqueta", nombre: "Bolqueta" },
-    { id: "motoniveladora", nombre: "Motoniveladora" }
-  ];
-
   class ContractController {
     static init() {
       const currentUser = window.UserModel.getCurrentUser();
@@ -36,6 +18,15 @@
 
       if (loginWarning) loginWarning.classList.add('d-none');
       if (contractForm) contractForm.classList.remove('d-none');
+
+      // Fetch dynamic active lists from Models
+      const servicesList = window.ServicioModel.getAll()
+        .filter(s => s.estado === "Activo")
+        .map(s => ({ id: s.slug, nombre: s.nombre }));
+
+      const machinesList = window.MaquinariaModel.getAll()
+        .filter(m => m.estado === "Disponible")
+        .map(m => ({ id: m.slug, nombre: m.nombre }));
 
       // Initialize dropdown options
       window.ContractView.initForm(servicesList, machinesList);

@@ -66,6 +66,17 @@
           adminLi.innerHTML = `<a href="${basePath}admin.html" class="orange-link fw-bold"><i class="bi bi-shield-lock"></i> Panel Admin</a>`;
           navmenuUl.appendChild(adminLi);
         }
+
+        // Hide "Solicitar Contrato" link for Admin to avoid breaking the responsive navbar layout
+        const contratoLink = Array.from(navmenuUl.querySelectorAll("a")).find(a => a.getAttribute("href").includes("contrato.html"));
+        if (contratoLink) {
+          const contratoLi = contratoLink.closest("li");
+          if (currentUser && currentUser.rol === "Administrador") {
+            contratoLi.classList.add("d-none");
+          } else {
+            contratoLi.classList.remove("d-none");
+          }
+        }
       }
 
       // 2. Render Auth buttons (Login / Logged User state)

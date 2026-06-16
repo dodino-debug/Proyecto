@@ -11,6 +11,9 @@
 
       // 2. Initial dashboard render
       this.refreshDashboard();
+
+      // 3. Bind global CRUD events once
+      this.bindGlobalCrud();
     }
 
     static refreshDashboard() {
@@ -18,9 +21,11 @@
       const pagos = window.PagoModel.getAll();
       const solicitudes = window.SolicitudModel.getAll();
       const contratos = window.ContratoModel.getAll();
+      const servicios = window.ServicioModel.getAll();
+      const maquinarias = window.MaquinariaModel.getAll();
 
       // Update View
-      window.AdminView.renderDashboard(stats, pagos, solicitudes, contratos);
+      window.AdminView.renderDashboard(stats, pagos, solicitudes, contratos, servicios, maquinarias);
 
       // Re-bind action button events and row clicks
       this.bindActions();
@@ -70,6 +75,34 @@
           window.SolicitudModel.updateEstado(id, "Rechazada");
           window.AdminView.showNotification("La solicitud #" + id + " ha sido rechazada.");
           self.refreshDashboard();
+        });
+      });
+
+      // Edit buttons for services/machinery
+      document.querySelectorAll(".btn-crud-edit").forEach(btn => {
+        btn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          const id = this.getAttribute("data-id");
+          const type = this.getAttribute("data-type");
+          self.openCrudModal("edit", type, id);
+        });
+      });
+
+      // Delete buttons for services/machinery
+      document.querySelectorAll(".btn-crud-delete").forEach(btn => {
+        btn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          const id = this.getAttribute("data-id");
+          const type = this.getAttribute("data-type");
+          if (confirm(`¿Está seguro de que desea eliminar este ${type}?`)) {
+            if (type === "servicio") {
+              window.ServicioModel.delete(id);
+            } else {
+              window.MaquinariaModel.delete(id);
+            }
+            window.AdminView.showNotification(`El ${type} ha sido eliminado.`);
+            self.refreshDashboard();
+          }
         });
       });
 
@@ -180,6 +213,110 @@
           const modalInstance = window.bootstrap.Modal.getOrCreateInstance(modalEl);
           modalInstance.show();
         }
+      }
+    }
+
+    static bindGlobalCrud() {
+      const self = this;
+      
+      const btnAddServicio = document.getElementById("btn-add-servicio");
+      if (btnAddServicio) {
+        btnAddServicio.addEventListener("click", () => {
+          self.openCrudModal("add", "servicio");
+        });
+      }
+
+      const btnAddMaquina = document.getElementById("btn-add-maquina");
+      if (btnAddMaquina) {
+        btnAddMaquina.addEventListener("click", () => {
+          self.openCrudModal("add", "maquinaria");
+        });
+      }
+
+      const form = document.getElementById("admin-crud-form");
+      if (form) {
+        form.addEventListener("submit", function(e) {
+          e.preventDefault();
+          const id = document.getElementById("crud-id").value;
+          const type = document.getElementById("crud-type").value;
+          const nombre = document.getElementById("crud-nombre").value.trim();
+          let slug = document.getElementById("crud-slug").value.trim();
+          const estado = document.getElementById("crud-estado").value;
+
+          if (!slug) {
+            slug = nombre.toLowerCase().replace(/[^a-z0-9_]+/g, "-");
+          }
+
+          const data = { nombre, slug, estado };
+
+          if (id) {
+            if (type === "servicio") {
+              window.ServicioModel.update(id, data);
+            } else {
+              window.MaquinariaModel.update(id, data);
+            }
+            window.AdminView.showNotification("Elemento actualizado con éxito.");
+          } else {
+            if (type === "servicio") {
+              window.ServicioModel.add(data);
+            } else {
+              window.MaquinariaModel.add(data);
+            }
+            window.AdminView.showNotification("Elemento creado con éxito.");
+          }
+
+          // Close modal
+          const modalEl = document.getElementById("adminCrudModal");
+          if (modalEl && window.bootstrap) {
+            const modalInstance = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+            modalInstance.hide();
+          }
+
+          self.refreshDashboard();
+        });
+      }
+    }
+
+    static openCrudModal(mode, type, id) {
+      document.getElementById("admin-crud-form").reset();
+      document.getElementById("crud-id").value = id || "";
+      document.getElementById("crud-type").value = type;
+
+      const titleEl = document.getElementById("adminCrudModalLabel");
+      const estadoSelect = document.getElementById("crud-estado");
+
+      if (type === "servicio") {
+        titleEl.textContent = mode === "add" ? "Agregar Servicio Agrícola" : "Editar Servicio Agrícola";
+        estadoSelect.innerHTML = `
+          <option value="Activo">Activo</option>
+          <option value="Inactivo">Inactivo</option>
+        `;
+      } else {
+        titleEl.textContent = mode === "add" ? "Agregar Maquinaria Pesada" : "Editar Maquinaria Pesada";
+        estadoSelect.innerHTML = `
+          <option value="Disponible">Disponible</option>
+          <option value="Mantenimiento">Mantenimiento</option>
+          <option value="No Disponible">No Disponible</option>
+        `;
+      }
+
+      if (mode === "edit" && id) {
+        const item = type === "servicio" 
+          ? window.ServicioModel.getById(id)
+          : window.MaquinariaModel.getById(id);
+        
+        if (item) {
+          document.getElementById("crud-nombre").value = item.nombre;
+          document.getElementById("crud-slug").value = item.slug;
+          estadoSelect.value = item.estado;
+        }
+      }
+
+      // Show modal
+      const modalEl = document.getElementById("adminCrudModal");
+      if (modalEl && window.bootstrap) {
+        const modalInstance = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+        modalInstance.show();
       }
     }
   }

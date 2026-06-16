@@ -10,6 +10,8 @@
   // List of MVC scripts in strict dependency order
   const mvcScripts = [
     "src/Models/Database.js",
+    "src/Models/ServicioModel.js",
+    "src/Models/MaquinariaModel.js",
     "src/Models/UserModel.js",
     "src/Models/SolicitudModel.js",
     "src/Models/ContratoModel.js",

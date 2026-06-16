@@ -5,7 +5,7 @@
   "use strict";
 
   class AdminView {
-    static renderDashboard(stats, pagos, solicitudes, contratos) {
+    static renderDashboard(stats, pagos, solicitudes, contratos, servicios, maquinarias) {
       // 1. Populate stats cards
       const statPagos = document.getElementById("stat-pagos-pendientes");
       if (statPagos) statPagos.textContent = stats.pagos_pendientes;
@@ -29,6 +29,12 @@
       const countCon = document.getElementById("count-contratos");
       if (countCon) countCon.textContent = contratos.length;
 
+      const countServicios = document.getElementById("count-servicios");
+      if (countServicios) countServicios.textContent = servicios.length;
+
+      const countMaquinas = document.getElementById("count-maquinas");
+      if (countMaquinas) countMaquinas.textContent = maquinarias.length;
+
       // Badges
       const badgePagos = document.getElementById("badge-pagos-pendientes");
       if (badgePagos) badgePagos.textContent = stats.pagos_pendientes + " Pendientes";
@@ -44,6 +50,12 @@
 
       // 5. Render Contratos Table
       this.renderContratos(contratos);
+
+      // 6. Render Servicios Table
+      this.renderServicios(servicios);
+
+      // 7. Render Maquinaria Table
+      this.renderMaquinaria(maquinarias);
     }
 
     static renderPagos(pagos) {
@@ -165,6 +177,67 @@
             <td class="text-white fw-bold">${c.cliente_nombre}</td>
             <td class="small">${formattedDate}</td>
             <td class="text-center"><span class="badge bg-success">${c.estado}</span></td>
+          </tr>
+        `;
+      });
+    }
+
+    static renderServicios(servicios) {
+      const serviciosBody = document.getElementById("table-servicios-body");
+      if (!serviciosBody) return;
+
+      serviciosBody.innerHTML = "";
+      if (servicios.length === 0) {
+        serviciosBody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-white-50">No hay servicios registrados</td></tr>`;
+        return;
+      }
+
+      servicios.forEach(s => {
+        const badgeClass = s.estado === "Activo" ? "bg-success" : "bg-danger";
+        serviciosBody.innerHTML += `
+          <tr data-id="${s.id}" data-type="servicio" class="admin-table-row">
+            <td class="text-center fw-bold text-white-50">#${s.id}</td>
+            <td class="text-white fw-bold">${s.nombre}</td>
+            <td><code>${s.slug}</code></td>
+            <td class="text-center"><span class="badge ${badgeClass}">${s.estado}</span></td>
+            <td class="text-center">
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-primary rounded btn-crud-edit" data-id="${s.id}" data-type="servicio" title="Editar servicio"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-sm btn-danger rounded btn-crud-delete" data-id="${s.id}" data-type="servicio" title="Eliminar servicio"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    static renderMaquinaria(maquinarias) {
+      const maquinasBody = document.getElementById("table-maquinas-body");
+      if (!maquinasBody) return;
+
+      maquinasBody.innerHTML = "";
+      if (maquinarias.length === 0) {
+        maquinasBody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-white-50">No hay maquinaria registrada</td></tr>`;
+        return;
+      }
+
+      maquinarias.forEach(m => {
+        let badgeClass = "bg-success";
+        if (m.estado === "Mantenimiento") badgeClass = "bg-warning text-dark";
+        if (m.estado === "No Disponible") badgeClass = "bg-danger";
+
+        maquinasBody.innerHTML += `
+          <tr data-id="${m.id}" data-type="maquinaria" class="admin-table-row">
+            <td class="text-center fw-bold text-white-50">#${m.id}</td>
+            <td class="text-white fw-bold">${m.nombre}</td>
+            <td><code>${m.slug}</code></td>
+            <td class="text-center"><span class="badge ${badgeClass}">${m.estado}</span></td>
+            <td class="text-center">
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-primary rounded btn-crud-edit" data-id="${m.id}" data-type="maquinaria" title="Editar maquinaria"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-sm btn-danger rounded btn-crud-delete" data-id="${m.id}" data-type="maquinaria" title="Eliminar maquinaria"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
           </tr>
         `;
       });
